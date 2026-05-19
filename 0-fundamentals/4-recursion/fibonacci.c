@@ -1,11 +1,13 @@
+// Fibonacci recursivo
+
 #include <stdio.h>
 
 int fibonacci(int n){
-    if(n == 0){
+    if (n == 0) {
         return 0;
     }
 
-    if(n == 1){
+    if (n == 1) {
         return 1;
     }
 
@@ -15,9 +17,9 @@ int fibonacci(int n){
 int main(){
     int n = 10;
 
-    for (int i = 0; i < n; i++) {
-        printf("%d ", fibonacci(i));
+    for (int i = 0; i < n; i++){
+        printf("%i ", fibonacci(i));
     }
-    
+
     return 0;
 }
