@@ -1,5 +1,5 @@
 // Criar uma struct ArrayDinamico com dados, tamanho, capacidade
-// Implementar: criar, inserir, remover, buscar, destruir
+// Implementar: criar, inserir, inserir_em_posicao, remover, buscar, destruir
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,8 +20,30 @@ struct DynamicArray* criar(int capacity){
 }
 
 void inserir(struct DynamicArray *dynamicArr, int n){
+    if (dynamicArr->length >= dynamicArr->capacity) {
+        dynamicArr->capacity = dynamicArr->capacity * 2;
+        dynamicArr->data = realloc(dynamicArr->data, dynamicArr->capacity * sizeof(int));
+    }
     dynamicArr->data[dynamicArr->length] = n;
     dynamicArr->length++;
+}
+
+void inserir_em_posicao(struct DynamicArray *dynamicArray, int pos, int n) {
+    if (dynamicArray->length >= dynamicArray->capacity) {
+        dynamicArray->capacity = dynamicArray->capacity * 2;
+        dynamicArray->data = realloc(dynamicArray->data, dynamicArray->capacity * sizeof(int));
+    }
+
+    if (pos < 0 || pos > dynamicArray->length) {
+        printf("Posição invalida\n");
+        return;
+    }
+
+    for (int i = dynamicArray->length; i > pos; i--) {
+        dynamicArray->data[i] = dynamicArray->data[i-1];
+    }
+    dynamicArray->data[pos] = n;
+    dynamicArray->length++;
 }
 
 int busca_sequencial(struct DynamicArray *dynamicArr, int n) {
@@ -34,18 +56,21 @@ int busca_sequencial(struct DynamicArray *dynamicArr, int n) {
     return -1;
 }
 
-void remover(struct DynamicArray *dynamicArr, int n){
-    dynamicArr->data[n] = -1;
-    for (int i = n; i < dynamicArr->length - 1; i++) {
+void remover(struct DynamicArray *dynamicArr, int pos){
+    if (pos < 0 || pos >= dynamicArr->length) {
+        printf("Posição invalida\n");
+        return;
+    }
+
+    for (int i = pos; i < dynamicArr->length - 1; i++) {
         dynamicArr->data[i] = dynamicArr->data[i + 1];
     }
-    dynamicArr->data[dynamicArr->length - 1] = -1;
     dynamicArr->length--;
 }
 
 void destruir(struct DynamicArray *dynamicArr){
-    free(dynamicArr);
     free(dynamicArr->data);
+    free(dynamicArr);
 }
 
 void mostrar(struct DynamicArray *dynamicArr){
